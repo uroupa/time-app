@@ -1,0 +1,128 @@
+
+* {
+  font-family: 'Segeo UI', 'Roboto', sans-serif;
+}
+.intro-header {
+  margin: auto;
+}
+
+h1 {
+  padding: 10px;
+  font-size: 3rem;
+}
+
+/* navbar */
+
+.navbar {
+    position: relative;
+    margin-bottom: 0px;
+}
+.brand {
+    position: absolute;
+    left: 50%;
+    margin-left: -50px !important;  /* 50% of your logo width */
+    display: block;
+}
+
+.brand {
+  padding-top: 10px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.3rem;
+}
+
+.main-content {
+  padding-top : 20px}
+
+.form-control {
+  border-top-style: hidden;
+  border-right-style: hidden;
+  border-left-style: hidden;
+  border-bottom-style: inset;
+  border-bottom-color: grey;
+  border-bottom-width: 1px;
+  display:inline;
+  width: 90%
+  }
+
+.form-group{
+  margin-bottom:8px;
+  }
+
+.btn-primary:hover {
+  background: #3cb0fd;
+  text-decoration: none;
+}
+
+input[type="submit" i] {
+  margin-top: 20px;
+  -webkit-border-radius: 7;
+  -moz-border-radius: 7;
+  border-radius: 7px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 15px;
+  border-width: 0px;
+  padding: 8px 25px 8px 25px;
+  text-decoration: none;
+}
+
+.list-group-item {
+  padding: 20px 20px 0px 20px}
+
+.section-heading {
+  padding-top: 10px;
+  padding-bottom: 30px;}
+
+.list-group-item h3 {
+  font-weight: normal;}
+
+.main-content {
+  background-image: url('/static/img/photo-1531592937781-344ad608fabf-2.jpeg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+
+.login-container {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  width: 45%;
+  margin-top: 10%;
+  margin-bottom: 10%;
+  display: grid;
+  place-items: center
+
+  }
+
+.login-container form {
+  padding: 10px;
+  margin-top: 50px;
+  margin-bottom: 50px;}
+
+.page-heading {
+  align-items: center;}
+
+.scheduler-section {
+  background: white;
+  padding: 20px;
+  border-radius: 0px;
+  margin-bottom: 10px;}
+
+.list-section {
+  background: white;
+  padding: 20px;
+  border-radius: 0px;
+  margin-bottom: 10px;}
+
+.ckeditor-form {
+  background: white;
+  padding: 20px;
+  border-radius: 0px;
+  margin-bottom: 10px;}
+
+.project-topic {
+  padding-left: 0px;}

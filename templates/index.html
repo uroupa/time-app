@@ -1,0 +1,96 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+
+<!-- Main Content -->
+<div class="main-content">
+
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-4 col-md-6 mx-auto">
+        <div class="scheduler-section">
+          <h2 class="section-heading">Scheduler & Reminder</h2>
+          <form action="{{ url_for('login') }}" method="post">
+            {{scheduler_tab.hidden_tag()}}
+
+            <div class="form-group">
+              <span>{{scheduler_tab.six_am.label()}}:</span> {{scheduler_tab.six_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.seven_am.label()}}:</span> {{scheduler_tab.seven_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.eight_am.label()}}:</span> {{scheduler_tab.eight_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.nine_am.label()}}:</span> {{scheduler_tab.six_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.ten_am.label()}}:</span> {{scheduler_tab.seven_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.eleven_am.label()}}:</span> {{scheduler_tab.eight_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.twelve_pm.label()}}:</span> {{scheduler_tab.six_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.one_pm.label()}}:</span> {{scheduler_tab.seven_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.two_pm.label()}}:</span> {{scheduler_tab.eight_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.three_pm.label()}}:</span> {{scheduler_tab.eight_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.four_pm.label()}}:</span> {{scheduler_tab.six_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.five_pm.label()}}:</span> {{scheduler_tab.seven_am(class="form-control")}}
+            </div>
+            <div class="form-group">
+              <span>{{scheduler_tab.six_pm.label()}}:</span> {{scheduler_tab.eight_am(class="form-control")}}
+            </div>
+
+            {{scheduler_tab.submit(class="btn-primary")}}
+          </form>
+        </div>
+      </div>
+
+      <div class="col-lg-8 col-md-6 mx-auto">
+        <div class="list-section">
+          <h1 class="project-topic">Project Topic: {{topic}}</h1>
+          <hr>
+          <h2 class="section-heading">Priorities</h2>
+          <ul class="list-group">
+            {%for priority in all_priorities:%}
+            <li class="list-group-item">
+              <h3 style="display:inline">{{priority}}</h3>
+              <input class="form-check-input me-1" type="checkbox" value="" aria-label="..." style="float:right">
+              <hr>
+            </li>
+            {%endfor%}
+          </ul>
+
+        </div>
+
+        <div class="ckeditor-form">
+          <h2 class="section-heading">Brain Dump</h2>
+          {{ ckeditor.load() }}
+          {{ ckeditor.config(name='text') }}
+
+          {{ wtf.quick_form(idea_box, novalidate=True, button_map={"submit": "primary"}) }}
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+<hr>
+
+{% include "footer.html" %}
+{% endblock %}

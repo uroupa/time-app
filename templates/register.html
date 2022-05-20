@@ -1,0 +1,36 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+
+<!-- Page Header -->
+<div class="main-content">
+  <div class="login-container">
+    <div class="page-heading">
+      <h1>Register</h1>
+      <span class="subheading">Start Using Our Scheduler!</span>
+    </div>
+
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-10 col-md-10 mx-auto">
+          {% with messages = get_flashed_messages() %}
+          {% if messages %}
+          {% for message in messages %}
+          <p>{{ message }}</p>
+          {% endfor %}
+          {% endif %}
+          {% endwith %}
+
+          {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+          <p>Already have an account? <a href="{{ url_for('login') }}">Sign In.</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include "footer.html" %}
+{% endblock %}
