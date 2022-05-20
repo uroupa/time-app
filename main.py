@@ -172,8 +172,7 @@ def logout():
     return redirect(url_for('register'))
 
 
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @admin_only
 def get_user_info():
     # user_id = request.args['user_id']   # counterpart for url_for()
@@ -188,7 +187,29 @@ def get_user_info():
     else:
         topic = priorities.topic.title()
         priorities = [priorities.item1, priorities.item2, priorities.item3]
-        idea_form = GamePlanForm()
+
+        #for the brain dump logic
+        user_gameplan = GamePlan.query.filter_by(author_id=user_id).first()
+        print(user_gameplan)
+        if user_gameplan is None or len(user_gameplan.text) < 1:
+            idea_form = GamePlanForm()
+            if idea_form.validate_on_submit():
+                idea_text = idea_form.text.data
+                new_gameplan = GamePlan(author_id=user_id, text=idea_text)
+                db.session.add(new_gameplan)
+                db.session.commit()
+                return redirect(url_for("get_user_info"))
+
+        else:
+            idea_form = GamePlanForm(text=user_gameplan.text)
+            print(user_gameplan)
+            if idea_form.validate_on_submit():
+                user_gameplan.text = idea_form.text.data
+                db.session.commit()
+                return redirect(url_for("get_user_info"))
+
+        #for the scheduler logic
+        #add the form variables to the database and catch them here. if the user has data, bring back
         scheduler_form = SchedulerForm()
         return render_template("index.html", all_priorities=priorities, idea_box=idea_form, scheduler_tab=scheduler_form, topic=topic)
 

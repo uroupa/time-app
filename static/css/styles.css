@@ -126,3 +126,6 @@ input[type="submit" i] {
 
 .project-topic {
   padding-left: 0px;}
+
+.error-message {
+  color: red}
