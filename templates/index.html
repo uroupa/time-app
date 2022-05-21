@@ -13,51 +13,7 @@
       <div class="col-lg-4 col-md-6 mx-auto">
         <div class="scheduler-section">
           <h2 class="section-heading">Scheduler & Reminder</h2>
-          <form action="{{ url_for('login') }}" method="post">
-            {{scheduler_tab.hidden_tag()}}
-
-            <div class="form-group">
-              <span>{{scheduler_tab.six_am.label()}}:</span> {{scheduler_tab.six_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.seven_am.label()}}:</span> {{scheduler_tab.seven_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.eight_am.label()}}:</span> {{scheduler_tab.eight_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.nine_am.label()}}:</span> {{scheduler_tab.six_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.ten_am.label()}}:</span> {{scheduler_tab.seven_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.eleven_am.label()}}:</span> {{scheduler_tab.eight_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.twelve_pm.label()}}:</span> {{scheduler_tab.six_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.one_pm.label()}}:</span> {{scheduler_tab.seven_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.two_pm.label()}}:</span> {{scheduler_tab.eight_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.three_pm.label()}}:</span> {{scheduler_tab.eight_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.four_pm.label()}}:</span> {{scheduler_tab.six_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.five_pm.label()}}:</span> {{scheduler_tab.seven_am(class="form-control")}}
-            </div>
-            <div class="form-group">
-              <span>{{scheduler_tab.six_pm.label()}}:</span> {{scheduler_tab.eight_am(class="form-control")}}
-            </div>
-
-            {{scheduler_tab.submit(class="btn-primary")}}
-          </form>
+          {{ wtf.quick_form(scheduler_tab, novalidate=True, button_map={"submit": "primary"}) }}
         </div>
       </div>
 

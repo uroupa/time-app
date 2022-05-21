@@ -14,10 +14,11 @@ from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from flask_gravatar import Gravatar
+from typing import Callable
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = "secret"
 app.config['CKEDITOR_PKG_TYPE'] = 'basic'
 ckeditor = CKEditor(app)
 Bootstrap(app)
@@ -30,7 +31,17 @@ login_manager.init_app(app)
 ##CONNECT TO DB and create the file
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+
+
+class MySQLAlchemy(SQLAlchemy):
+    Column: Callable
+    String: Callable
+    Text: Callable
+    Integer: Callable
+    ForeignKey: Callable
+
+
+db = MySQLAlchemy(app)
 
 
 ##CONFIGURE TABLES
@@ -63,7 +74,7 @@ class GamePlan(db.Model):
 class Scheduler(db.Model):
     __tablename__ = "scheduler"
     id = db.Column(db.Integer, primary_key=True)
-    author_id = db.Column(db.Integer)
+    author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     six = db.Column(db.String(), nullable=True)
     seven = db.Column(db.String(), nullable=True)
     eight = db.Column(db.String(), nullable=True)
@@ -210,7 +221,7 @@ def get_user_info():
         #for the brain dump logic
         user_gameplan = GamePlan.query.filter_by(author_id=user_id).first()
         print(user_gameplan)
-        if user_gameplan is None or len(user_gameplan.text) < 1:
+        if user_gameplan is None:
             idea_form = GamePlanForm()
             if idea_form.validate_on_submit():
                 idea_text = idea_form.text.data
@@ -232,8 +243,13 @@ def get_user_info():
         # user_schedule = Scheduler.query.filter_by(author_id=user_id).first()
         # print(user_schedule)
 
+        user_schedule = Scheduler.query.filter_by(author_id=user_id).first()
+        print(user_schedule)
+
+        # if user_schedule is None:
+        #     print("empty user schedule")
         schedule_form = SchedulerForm()
-        if schedule_form.validate_on_submit():
+        if schedule_form.validate_on_submit() and request.method == 'POST':
             new_schedule = Scheduler(
                 six=schedule_form.six_am.data,
                 seven=schedule_form.seven_am.data,
@@ -247,11 +263,11 @@ def get_user_info():
                 fifteen=schedule_form.three_pm.data,
                 sixteen=schedule_form.four_pm.data,
                 seventeen=schedule_form.five_pm.data,
-                eighteen=schedule_form.six_pm.data
-            )
+                eighteen=schedule_form.six_pm.data)
             db.session.add(new_schedule)
             db.session.commit()
-            return redirect(url_for("get_all_posts"))
+            print("not empty now")
+            return redirect(url_for("get_user_info"))
 
         return render_template("index.html", all_priorities=priorities, idea_box=idea_form, scheduler_tab=schedule_form, topic=topic)
 
