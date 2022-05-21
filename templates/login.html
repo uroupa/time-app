@@ -6,7 +6,7 @@
 
 <div class="main-content">
   <!-- Page Header -->
-  <div class="login-container">
+  <div class="login-container ">
 
 
     <div class="page-heading">
@@ -23,7 +23,7 @@
           {% with messages = get_flashed_messages() %}
           {% if messages %}
           {% for message in messages %}
-          <p>{{ message }}</p>
+          <p class="error-message">{{ message }}</p>
           {% endfor %}
           {% endif %}
           {% endwith %}
