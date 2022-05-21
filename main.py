@@ -60,6 +60,25 @@ class GamePlan(db.Model):
     text = db.Column(db.Text, nullable=True)
 
 
+class Scheduler(db.Model):
+    __tablename__ = "scheduler"
+    id = db.Column(db.Integer, primary_key=True)
+    author_id = db.Column(db.Integer)
+    six = db.Column(db.String(), nullable=True)
+    seven = db.Column(db.String(), nullable=True)
+    eight = db.Column(db.String(), nullable=True)
+    nine = db.Column(db.String(), nullable=True)
+    ten = db.Column(db.String(), nullable=True)
+    eleven = db.Column(db.String(), nullable=True)
+    twelve = db.Column(db.String(), nullable=True)
+    thirteen = db.Column(db.String(), nullable=True)
+    fourteen = db.Column(db.String(), nullable=True)
+    fifteen = db.Column(db.String(), nullable=True)
+    sixteen = db.Column(db.String(), nullable=True)
+    seventeen = db.Column(db.String(), nullable=True)
+    eighteen = db.Column(db.String(), nullable=True)
+
+
 db.create_all()
 
 
@@ -208,10 +227,33 @@ def get_user_info():
                 db.session.commit()
                 return redirect(url_for("get_user_info"))
 
-        #for the scheduler logic
-        #add the form variables to the database and catch them here. if the user has data, bring back
-        scheduler_form = SchedulerForm()
-        return render_template("index.html", all_priorities=priorities, idea_box=idea_form, scheduler_tab=scheduler_form, topic=topic)
+        # for the scheduler logic
+        # add the form variables to the database and catch them here. if the user has data, bring back
+        # user_schedule = Scheduler.query.filter_by(author_id=user_id).first()
+        # print(user_schedule)
+
+        schedule_form = SchedulerForm()
+        if schedule_form.validate_on_submit():
+            new_schedule = Scheduler(
+                six=schedule_form.six_am.data,
+                seven=schedule_form.seven_am.data,
+                eight=schedule_form.eight_am.data,
+                nine=schedule_form.nine_am.data,
+                ten=schedule_form.ten_am.data,
+                eleven=schedule_form.eleven_am.data,
+                twelve=schedule_form.twelve_pm.data,
+                thirteen=schedule_form.one_pm.data,
+                fourteen=schedule_form.two_pm.data,
+                fifteen=schedule_form.three_pm.data,
+                sixteen=schedule_form.four_pm.data,
+                seventeen=schedule_form.five_pm.data,
+                eighteen=schedule_form.six_pm.data
+            )
+            db.session.add(new_schedule)
+            db.session.commit()
+            return redirect(url_for("get_all_posts"))
+
+        return render_template("index.html", all_priorities=priorities, idea_box=idea_form, scheduler_tab=schedule_form, topic=topic)
 
 
 @app.route("/settask", methods=['GET', 'POST'])
