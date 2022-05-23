@@ -127,7 +127,7 @@ class SchedulerForm(FlaskForm):
     five_pm = StringField("5 PM")
     six_pm = StringField("6 PM")
 
-    submit = SubmitField("Save")
+    submit = SubmitField("Save Schedule")
 
 
 # use priotities as general header for this section in html end
@@ -209,6 +209,28 @@ def get_user_info():
     user_id = session['user_id']        # counterpart for session
     priorities = Priority.query.filter_by(author_id=user_id).first()
 
+    schedule_form = SchedulerForm()
+    if schedule_form.validate_on_submit():
+        print(f"rare {schedule_form.six_am.data}")
+        new_schedule = Scheduler(
+            six=schedule_form.six_am.data,
+            seven=schedule_form.seven_am.data,
+            eight=schedule_form.eight_am.data,
+            nine=schedule_form.nine_am.data,
+            ten=schedule_form.ten_am.data,
+            eleven=schedule_form.eleven_am.data,
+            twelve=schedule_form.twelve_pm.data,
+            thirteen=schedule_form.one_pm.data,
+            fourteen=schedule_form.two_pm.data,
+            fifteen=schedule_form.three_pm.data,
+            sixteen=schedule_form.four_pm.data,
+            seventeen=schedule_form.five_pm.data,
+            eighteen=schedule_form.six_pm.data)
+        db.session.add(new_schedule)
+        db.session.commit()
+        print("not empty now")
+        return redirect(url_for("get_user_info"))
+
     # check if priority list is empty
     if not priorities:
         return redirect(url_for('set_task'))
@@ -246,27 +268,7 @@ def get_user_info():
 
         # if user_schedule is None:
         #     print("empty user schedule")
-    schedule_form = SchedulerForm()
-    if schedule_form.validate_on_submit():
-        print(f"rare {schedule_form.six_am.data}")
-        new_schedule = Scheduler(
-            six=schedule_form.six_am.data,
-            seven=schedule_form.seven_am.data,
-            eight=schedule_form.eight_am.data,
-            nine=schedule_form.nine_am.data,
-            ten=schedule_form.ten_am.data,
-            eleven=schedule_form.eleven_am.data,
-            twelve=schedule_form.twelve_pm.data,
-            thirteen=schedule_form.one_pm.data,
-            fourteen=schedule_form.two_pm.data,
-            fifteen=schedule_form.three_pm.data,
-            sixteen=schedule_form.four_pm.data,
-            seventeen=schedule_form.five_pm.data,
-            eighteen=schedule_form.six_pm.data)
-        db.session.add(new_schedule)
-        db.session.commit()
-        print("not empty now")
-        return redirect(url_for("get_user_info"))
+
 
     return render_template("index.html", all_priorities=priorities, idea_box=idea_form, scheduler_tab=schedule_form, topic=topic)
 
