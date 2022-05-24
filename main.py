@@ -14,10 +14,11 @@ from sqlalchemy import Table, Column, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from flask_gravatar import Gravatar
+from typing import Callable
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = "secret"
 app.config['CKEDITOR_PKG_TYPE'] = 'basic'
 ckeditor = CKEditor(app)
 Bootstrap(app)
@@ -30,7 +31,17 @@ login_manager.init_app(app)
 ##CONNECT TO DB and create the file
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+
+
+class MySQLAlchemy(SQLAlchemy):
+    Column: Callable
+    String: Callable
+    Text: Callable
+    Integer: Callable
+    ForeignKey: Callable
+
+
+db = MySQLAlchemy(app)
 
 
 ##CONFIGURE TABLES
@@ -60,6 +71,26 @@ class GamePlan(db.Model):
     text = db.Column(db.Text, nullable=True)
 
 
+class Scheduler(db.Model):
+    __tablename__ = "scheduler"
+    id = db.Column(db.Integer, primary_key=True)
+    author_id = db.Column(db.Integer)
+    author_email = db.Column(db.String())
+    six = db.Column(db.String(), nullable=True)
+    seven = db.Column(db.String(), nullable=True)
+    eight = db.Column(db.String(), nullable=True)
+    nine = db.Column(db.String(), nullable=True)
+    ten = db.Column(db.String(), nullable=True)
+    eleven = db.Column(db.String(), nullable=True)
+    twelve = db.Column(db.String(), nullable=True)
+    thirteen = db.Column(db.String(), nullable=True)
+    fourteen = db.Column(db.String(), nullable=True)
+    fifteen = db.Column(db.String(), nullable=True)
+    sixteen = db.Column(db.String(), nullable=True)
+    seventeen = db.Column(db.String(), nullable=True)
+    eighteen = db.Column(db.String(), nullable=True)
+
+
 db.create_all()
 
 
@@ -79,7 +110,7 @@ class Login(FlaskForm):
 
 class GamePlanForm(FlaskForm):
     text = CKEditorField("", render_kw={"placeholder": "Game Plan"})
-    submit = SubmitField("Save")
+    submit_gp = SubmitField("Save")
 
 
 class SchedulerForm(FlaskForm):
@@ -97,7 +128,7 @@ class SchedulerForm(FlaskForm):
     five_pm = StringField("5 PM")
     six_pm = StringField("6 PM")
 
-    submit = SubmitField("Save")
+    submit_sf = SubmitField("Save")
 
 
 # use priotities as general header for this section in html end
@@ -107,12 +138,13 @@ class CreatePriorityForm(FlaskForm):
     item2 = StringField('', render_kw={"placeholder": "Priority Item"})
     item3 = StringField('', render_kw={"placeholder": "Priority Item"})
     # gameplan = CKEditorField('', render_kw={"placeholder": "Game Plan"})
-    submit = SubmitField("Submit Post")
+    submit = SubmitField("Create TaskSet")
 
 ### forms
 
 
-def admin_only(f):
+
+def user_only(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
         if not current_user.is_authenticated:
@@ -141,7 +173,8 @@ def register():
             login_user(new_user)
             user_id = new_user.id
             session['user_id'] = user_id
-            return redirect(url_for('get_user_info'))
+            flash("You've created your account. Log in!")
+            return redirect(url_for('login'))
         else:
             flash("You've already signed up with that email, log in instead!")
             return redirect(url_for('login'))
@@ -173,13 +206,10 @@ def logout():
 
 
 @app.route('/', methods=['GET', 'POST'])
-@admin_only
+@user_only
 def get_user_info():
-    # user_id = request.args['user_id']   # counterpart for url_for()
     user_id = session['user_id']        # counterpart for session
-    print(user_id)
     priorities = Priority.query.filter_by(author_id=user_id).first()
-    print(priorities)
 
     # check if priority list is empty
     if not priorities:
@@ -190,114 +220,90 @@ def get_user_info():
 
         #for the brain dump logic
         user_gameplan = GamePlan.query.filter_by(author_id=user_id).first()
-        print(user_gameplan)
-        if user_gameplan is None or len(user_gameplan.text) < 1:
-            idea_form = GamePlanForm()
-            if idea_form.validate_on_submit():
-                idea_text = idea_form.text.data
-                new_gameplan = GamePlan(author_id=user_id, text=idea_text)
-                db.session.add(new_gameplan)
-                db.session.commit()
-                return redirect(url_for("get_user_info"))
+        idea_form = GamePlanForm(text=user_gameplan.text)
+        # for the scheduler logic
+        user_schedule = Scheduler.query.filter_by(author_id=user_id).first()
+        schedule_form = SchedulerForm(six_am=user_schedule.six,
+                                      seven_am = user_schedule.seven,
+                                      eight_am = user_schedule.eight,
+                                      nine_am = user_schedule.nine,
+                                      ten_am = user_schedule.ten,
+                                      eleven_am = user_schedule.eleven,
+                                      twelve_pm = user_schedule.twelve,
+                                      one_pm = user_schedule.thirteen,
+                                      two_pm = user_schedule.fourteen,
+                                      three_pm = user_schedule.fifteen,
+                                      four_pm = user_schedule.sixteen,
+                                      five_pm = user_schedule.seventeen,
+                                      six_pm = user_schedule.eighteen)
 
-        else:
-            idea_form = GamePlanForm(text=user_gameplan.text)
-            print(user_gameplan)
-            if idea_form.validate_on_submit():
-                user_gameplan.text = idea_form.text.data
-                db.session.commit()
-                return redirect(url_for("get_user_info"))
+        if idea_form.validate_on_submit() and idea_form.submit_gp.data:
+            print('idea form validation')
+            user_gameplan.text = idea_form.text.data
+            db.session.commit()
+            return redirect(url_for("get_user_info"))
+        elif schedule_form.validate_on_submit() and schedule_form.submit_sf.data:
+            print('sched form validation')
+            user_schedule.six = schedule_form.six_am.data
+            user_schedule.seven = schedule_form.seven_am.data
+            user_schedule.eight = schedule_form.eight_am.data
+            user_schedule.nine = schedule_form.nine_am.data
+            user_schedule.ten = schedule_form.ten_am.data
+            user_schedule.eleven = schedule_form.eleven_am.data
+            user_schedule.twelve = schedule_form.twelve_pm.data
+            user_schedule.thirteen = schedule_form.one_pm.data
+            user_schedule.fourteen = schedule_form.two_pm.data
+            user_schedule.fifteen = schedule_form.three_pm.data
+            user_schedule.sixteen = schedule_form.four_pm.data
+            user_schedule.seventeen = schedule_form.five_pm.data
+            user_schedule.eighteen = schedule_form.six_pm.data
 
-        #for the scheduler logic
-        #add the form variables to the database and catch them here. if the user has data, bring back
-        scheduler_form = SchedulerForm()
-        return render_template("index.html", all_priorities=priorities, idea_box=idea_form, scheduler_tab=scheduler_form, topic=topic)
+            db.session.commit()
+            return redirect(url_for("get_user_info"))
+
+        return render_template("index.html", all_priorities=priorities, idea_box=idea_form, scheduler_tab=schedule_form, topic=topic)
 
 
 @app.route("/settask", methods=['GET', 'POST'])
-@admin_only
+@user_only
 def set_task():
     form = CreatePriorityForm()
+    user_id = session['user_id']
     if form.validate_on_submit():
         new_priority = Priority(
             item1=form.item1.data,
             item2=form.item2.data,
             item3=form.item3.data,
             topic=form.topic.data,
-            author_id=session['user_id']
+            author_id=user_id
+        )
+        new_schedule = Scheduler(
+            six='',
+            seven='',
+            eight='',
+            nine='',
+            ten='',
+            eleven='',
+            twelve='',
+            thirteen='',
+            fourteen='',
+            fifteen='',
+            sixteen='',
+            seventeen='',
+            eighteen='',
+            author_id=user_id,
+            author_email=User.query.filter_by(id=user_id).first().email
+        )
+        new_gameplan = GamePlan(
+            text='-',
+            author_id=user_id,
         )
         db.session.add(new_priority)
+        db.session.add(new_schedule)
+        db.session.add(new_gameplan)
         db.session.commit()
         return redirect(url_for("get_user_info"))
     return render_template("create_task.html", form=form)
-
-
-@app.route("/edit_gameplan", methods=['GET', 'POST'])
-@admin_only
-def edit_gameplan():
-    user_id = session['user_id']
-    user_gameplan = GamePlan.query.filter_by(author_id=user_id).first()
-    if user_gameplan:
-        form = GamePlanForm(
-            text=user_gameplan.text
-        )
-    else:
-        form = GamePlanForm()
-    if form.validate_on_submit():
-        user_gameplan.text = form.text.data
-        db.session.commit()
-        return redirect(url_for("get_user_info"))
-    return render_template("create_task.html", form=form)
-
-
-# @app.route("/post/<int:priority_id>", methods=['GET', 'POST'])
-# def show_post(priority_id):
-#     requested_priority = Priority.query.get(priority_id)
-#     form = GamePlanForm()
-#     if request.method == 'POST' and form.validate_on_submit():
-#         if not current_user.is_authenticated:
-#             flash('Failed to post. Please login first.')
-#         else:
-#             new_comment = GamePlan(text=form.text.data, comment_author=current_user, parent_priority=requested_priority)
-#             db.session.add(new_comment)
-#             db.session.commit()
-#     return render_template("post.html", post=requested_priority, form=form, current_user=current_user)
-#
-#
-#
-#
-#
-#
-# @app.route("/edit-post/<int:post_id>", methods=['GET', 'POST'])
-# @admin_only
-# def edit_post(post_id):
-#     post = BlogPost.query.get(post_id)
-#     edit_form = CreatePostForm(
-#         title=post.title,
-#         subtitle=post.subtitle,
-#         img_url=post.img_url,
-#         author=post.author,
-#         body=post.body
-#     )
-#     if edit_form.validate_on_submit():
-#         post.title = edit_form.title.data
-#         post.subtitle = edit_form.subtitle.data
-#         post.img_url = edit_form.img_url.data
-#         post.author = edit_form.author.data
-#         post.body = edit_form.body.data
-#         db.session.commit()
-#         return redirect(url_for("show_post", post_id=post.id))
-#
-#     return render_template("create_task.html", form=edit_form)
-#
-#
-# @app.route("/delete/<int:post_id>")
-# @admin_only
-# def delete_post(post_id):
-#     post_to_delete = BlogPost.query.get(post_id)
-#     db.session.delete(post_to_delete)
-#     db.session.commit()
-#     return redirect(url_for('get_all_posts'))
 
 
 if __name__ == "__main__":
