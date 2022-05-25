@@ -9,7 +9,7 @@
 
     <div class="container">
         <div class="soppiestfrog">
-            <h2 class="project-topic"><span class="project-topic-style">project topic:</span> {{topic}}</h2>
+            <h2 class="project-topic"><span class="project-topic-style">Project Topic:</span><strong> {{topic}}</strong></h2>
             <hr>
             <div class="row">
 
@@ -20,7 +20,7 @@
                         <ul class="list-group">
                             {%for priority in all_priorities:%}
                             <li class="list-group-item">
-                                <h3 style="display:inline">{{priority}}</h3>
+                                <h4 style="display:inline"><strong>{{priority}}</strong></h4>
                                 <input class="form-check-input me-1" type="checkbox" value="" aria-label="..."
                                        style="float:right">
                                 <hr>
