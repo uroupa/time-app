@@ -37,7 +37,7 @@
                         {{ ckeditor.load() }}
                         {{ ckeditor.config(name='text') }}
 
-                        {{ wtf.quick_form(idea_box, novalidate=True, button_map={"submit_gp": "primary"}) }}
+                        {{ wtf.quick_form(idea_box, novalidate=True, button_map={"submit_gp": "success"}) }}
                     </div>
 
                 </div>
@@ -45,7 +45,7 @@
                     <div class="scheduler-section form-group">
                         <h3 class="section-heading">Scheduler & Reminder</h3>
                         {{ scheduler_tab.csrf_token }}
-                        {{ wtf.quick_form(scheduler_tab, novalidate=True, button_map={"submit_sf": "primary"}) }}
+                        {{ wtf.quick_form(scheduler_tab, novalidate=True, button_map={"submit_sf": "success"}) }}
                         {{ scheduler_tab.hidden_tag() }}
                     </div>
                 </div>

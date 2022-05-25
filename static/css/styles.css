@@ -169,6 +169,15 @@ input[type="submit" i] {
   padding: 20px;
   place-items: center}
 
+.project-topic{
+  display: inline;
+  padding-right: 20px;
+  padding-left: 20px;
+ }
+
+.project-topic-date {
+  float: right;}
+
 .joshpydevops {
 text-align: center;
 padding: 20px;
