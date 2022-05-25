@@ -16,20 +16,21 @@ from sqlalchemy.ext.declarative import declarative_base
 from flask_gravatar import Gravatar
 from typing import Callable
 
-
 app = Flask(__name__)
+today_date = date.today()
 app.config['SECRET_KEY'] = "secret"
 app.config['CKEDITOR_PKG_TYPE'] = 'basic'
 ckeditor = CKEditor(app)
 Bootstrap(app)
-gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False, base_url=None)
+gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False,
+                    base_url=None)
 
 # login manager from flask-login
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 ##CONNECT TO DB and create the file
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL",  "sqlite:///blog.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
@@ -133,15 +134,17 @@ class SchedulerForm(FlaskForm):
 
 # use priotities as general header for this section in html end
 class CreatePriorityForm(FlaskForm):
-    topic = StringField('', render_kw={"placeholder": "Enter your Project Topic"}, validators=[DataRequired('Enter a project topic.')])
-    item1 = StringField('', render_kw={"placeholder": "Priority Item"}, validators=[DataRequired('Enter at least one priority.')])
+    topic = StringField('', render_kw={"placeholder": "Enter your Project Topic"},
+                        validators=[DataRequired('Enter a project topic.')])
+    item1 = StringField('', render_kw={"placeholder": "Priority Item"},
+                        validators=[DataRequired('Enter at least one priority.')])
     item2 = StringField('', render_kw={"placeholder": "Priority Item"})
     item3 = StringField('', render_kw={"placeholder": "Priority Item"})
     # gameplan = CKEditorField('', render_kw={"placeholder": "Game Plan"})
     submit = SubmitField("Create TaskSet")
 
-### forms
 
+### forms
 
 
 def user_only(f):
@@ -151,6 +154,7 @@ def user_only(f):
             flash('Sorry. Please login or Sign up first.')
             return redirect(url_for('register'))
         return f(*args, **kwargs)
+
     return wrapper
 
 
@@ -164,19 +168,20 @@ def register():
     form = Register()
     if form.validate_on_submit() and request.method == 'POST':
         username = request.form['username']
-        email = request.form['email']
+        email = request.form['user_email']
         password = request.form['password']
         if not User.query.filter_by(email=email).first():
-            new_user = User(username=username, email=email, password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
+            new_user = User(username=username, email=email,
+                            password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
             db.session.add(new_user)
             db.session.commit()
-            login_user(new_user)
+            # maybe send an email saying user has been registered successfully
             user_id = new_user.id
             session['user_id'] = user_id
             flash("You've created your account. Log in!")
             return redirect(url_for('login'))
         else:
-            flash("You've already signed up with that email, log in instead!")
+            flash("You've already signed up with that user_email, log in instead!")
             return redirect(url_for('login'))
 
     return render_template("register.html", form=form)
@@ -195,7 +200,7 @@ def login():
             session['user_id'] = user_id
             return redirect(url_for('get_user_info'))
         if not user or not check_password_hash(user.password, password):
-            flash('Your email or password is wrong. Sign up if you do not have an account.')
+            flash('Your user_email or password is wrong. Sign up if you do not have an account.')
     return render_template("login.html", form=form)
 
 
@@ -208,7 +213,7 @@ def logout():
 @app.route('/', methods=['GET', 'POST'])
 @user_only
 def get_user_info():
-    user_id = session['user_id']        # counterpart for session
+    user_id = session['user_id']  # counterpart for session
     priorities = Priority.query.filter_by(author_id=user_id).first()
 
     # check if priority list is empty
@@ -218,24 +223,24 @@ def get_user_info():
         topic = priorities.topic.title()
         priorities = [priorities.item1, priorities.item2, priorities.item3]
 
-        #for the brain dump logic
+        # for the brain dump logic
         user_gameplan = GamePlan.query.filter_by(author_id=user_id).first()
         idea_form = GamePlanForm(text=user_gameplan.text)
         # for the scheduler logic
         user_schedule = Scheduler.query.filter_by(author_id=user_id).first()
         schedule_form = SchedulerForm(six_am=user_schedule.six,
-                                      seven_am = user_schedule.seven,
-                                      eight_am = user_schedule.eight,
-                                      nine_am = user_schedule.nine,
-                                      ten_am = user_schedule.ten,
-                                      eleven_am = user_schedule.eleven,
-                                      twelve_pm = user_schedule.twelve,
-                                      one_pm = user_schedule.thirteen,
-                                      two_pm = user_schedule.fourteen,
-                                      three_pm = user_schedule.fifteen,
-                                      four_pm = user_schedule.sixteen,
-                                      five_pm = user_schedule.seventeen,
-                                      six_pm = user_schedule.eighteen)
+                                      seven_am=user_schedule.seven,
+                                      eight_am=user_schedule.eight,
+                                      nine_am=user_schedule.nine,
+                                      ten_am=user_schedule.ten,
+                                      eleven_am=user_schedule.eleven,
+                                      twelve_pm=user_schedule.twelve,
+                                      one_pm=user_schedule.thirteen,
+                                      two_pm=user_schedule.fourteen,
+                                      three_pm=user_schedule.fifteen,
+                                      four_pm=user_schedule.sixteen,
+                                      five_pm=user_schedule.seventeen,
+                                      six_pm=user_schedule.eighteen)
 
         if idea_form.validate_on_submit() and idea_form.submit_gp.data:
             print('idea form validation')
@@ -261,7 +266,8 @@ def get_user_info():
             db.session.commit()
             return redirect(url_for("get_user_info"))
 
-        return render_template("index.html", all_priorities=priorities, idea_box=idea_form, scheduler_tab=schedule_form, topic=topic)
+        return render_template("index.html", all_priorities=priorities, idea_box=idea_form, scheduler_tab=schedule_form,
+                               topic=topic, date=today_date)
 
 
 @app.route("/settask", methods=['GET', 'POST'])
@@ -292,7 +298,7 @@ def set_task():
             seventeen='',
             eighteen='',
             author_id=user_id,
-            author_email=User.query.filter_by(id=user_id).first().email
+            author_email=User.query.filter_by(id=user_id).first().user_email
         )
         new_gameplan = GamePlan(
             text='-',
