@@ -153,8 +153,8 @@ input[type="submit" i] {
 
 @media only screen and (max-width: 1000px) {
  .login-container {
- width: 70%;
- }
+   width: 70%;
+   }
 }
 
 .project-topic-style {
@@ -176,13 +176,46 @@ input[type="submit" i] {
  }
 
 .project-topic-date {
-  float: right;}
+  float: right;
+}
 
 .joshpydevops {
-text-align: center;
-padding: 20px;
+  text-align: center;
+  padding: 20px;
+  font-size: 1rem
 }
 
 .anjomagic {
-font-family: 'Major Mono Display', monospace;
+  font-family: 'Major Mono Display', monospace;
+}
+
+.footer-profile-link{
+  text-decoration: none;
+  font-size: 1.3rem;
+  color: crimson;
+  font-weight: bold;
+}
+
+.footer-profile-link {
+  background:
+    linear-gradient(
+      to right,
+      rgba(100, 200, 200, 1),
+      rgba(100, 200, 200, 1)
+    ),
+    linear-gradient(
+      to right,
+      rgba(255, 0, 0, 1),
+      rgba(255, 0, 180, 1),
+      rgba(0, 100, 200, 1)
+  );
+  background-size: 100% 3px, 0 3px;
+  background-position: 100% 100%, 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 400ms;
+}
+
+.footer-profile-link:hover {
+  text-decoration: none;
+  background-size: 0 3px, 100% 3px;
 }
