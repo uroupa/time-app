@@ -168,7 +168,7 @@ def register():
     form = Register()
     if form.validate_on_submit() and request.method == 'POST':
         username = request.form['username']
-        email = request.form['user_email']
+        email = request.form['email']
         password = request.form['password']
         if not User.query.filter_by(email=email).first():
             new_user = User(username=username, email=email,
@@ -181,7 +181,7 @@ def register():
             flash("You've created your account. Log in!")
             return redirect(url_for('login'))
         else:
-            flash("You've already signed up with that user_email, log in instead!")
+            flash("You've already signed up with that email, log in instead!")
             return redirect(url_for('login'))
 
     return render_template("register.html", form=form)
@@ -200,7 +200,7 @@ def login():
             session['user_id'] = user_id
             return redirect(url_for('get_user_info'))
         if not user or not check_password_hash(user.password, password):
-            flash('Your user_email or password is wrong. Sign up if you do not have an account.')
+            flash('Your email or password is wrong. Sign up if you do not have an account.')
     return render_template("login.html", form=form)
 
 
@@ -298,7 +298,7 @@ def set_task():
             seventeen='',
             eighteen='',
             author_id=user_id,
-            author_email=User.query.filter_by(id=user_id).first().user_email
+            author_email=User.query.filter_by(id=user_id).first().email
         )
         new_gameplan = GamePlan(
             text='-',
