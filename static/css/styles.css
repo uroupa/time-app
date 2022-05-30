@@ -18,38 +18,7 @@ h1 {
     position: relative;
     margin-bottom: 0px;
 }
-.brand {
-position: absolute;
-    left: 50%;
-    margin-left: -50px !important;  /* 50% of your logo width */
-    display: block;
-  padding-top: 10px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 2.3rem;
-}
 
-.brandnew {
-position: absolute;
-    left: 90%;
-    margin-left: -50px !important;  /* 50% of your logo width */
-    display: block;
-  padding-top: 10px;
-  font-family: 'Oswald', sans-serif;
-  font-size: 1.3rem;
-}
-
-.brandpull{
-position: relative;
-    left: 90%;
-    margin-left: -50px !important;  /* 50% of your logo width */
-    display: block;
-  padding-top: 10px;
-  font-family: 'Oswald', sans-serif;
-
-}
-
-.main-content {
-  }
 
 .form-control {
   border-top-style: hidden;
@@ -203,11 +172,6 @@ input[type="submit" i] {
   font-size: 1rem
 }
 
-.anjomagic {
-  font-family: 'Major Mono Display', monospace;
-  text-align: center;
-}
-
 .footer-profile-link{
   text-decoration: none;
   font-size: 1.3rem;
@@ -251,9 +215,9 @@ body {
   align-items: center;
   margin-bottom: 0px;
   background: #232323;
-  font-family: 'Oswald', sans-serif;
+  font-family:sans-serif;
   color: #cdcdcd;
-  padding: 10px;
+  padding: 10px 20px 10px 20px;
   z-index: 1;
   -webkit-user-select: none;
   user-select: none;
@@ -274,11 +238,20 @@ body {
 .menu-container a {
   text-decoration: none;
   color: #232323;
-  transition: color 0.3s ease;
 }
 
-.menu-container a:hover {
+.navbar-brand-link{
+font-family: 'Oswald', sans-serif;}
+
+.navbar-item-link{
+  font-size: 1.4rem;
+  font-weight: lighter;
+}
+
+.navbar-item-link:hover {
   color: #00C6A7;
+  font-weight: bolder;
+  transition: font-weight 0.3s ease;
 }
 
 .menu-container input {
@@ -296,8 +269,8 @@ body {
 /* Burger menu */
 .menu-container span {
   display: block;
-  width: 33px;
-  height: 4px;
+  width: 30px;
+  height: 3px;
   margin-bottom: 5px;
   position: relative;
   background: #cdcdcd;
@@ -346,11 +319,13 @@ body {
   .menu-container {
     flex-direction: column;
     align-items: flex-end;
+    padding: 20px;
   }
 
   .menu-logo {
     position: absolute;
-    left: 0;
+    left: 50%;
+    margin-left: -50px;
     top: 50%;
     transform: translateY(-50%);
   }
@@ -366,7 +341,7 @@ body {
     right: -300px;
     top: 0;
     margin: -20px;
-    padding: 75px 50px 50px;
+    padding: 75px 20px 50px;
     background: #cdcdcd;
     -webkit-font-smoothing: antialiased;
     /* to stop flickering of text in safari */
@@ -378,8 +353,17 @@ body {
   .menu-container input:checked ~ .menu {
     transform: translateX(-100%);
   }
+
+  .scheduler-section form .control-label{
+    display: block;
+    }
 }
 
+@media only screen and (max-width: 767px) {
+  .scheduler-section form .control-label{
+    display: inline-block;
+    }
+}
 /* desktop styles */
 @media only screen and (min-width: 976px) {
   .menu-container {
@@ -416,5 +400,4 @@ body {
   }
 }
 
-.the-x{
-font-family: 'Oswald', sans-serif;}
+
