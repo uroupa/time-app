@@ -8,14 +8,18 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
+  <link href="{{ url_for('static', filename='css/all.min.css')}}" rel="stylesheet" type="text/css">
+
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Major+Mono+Display&family=Oswald&display=swap" rel="stylesheet">
 
-  <title class="anjomagic">Time App</title>
+  <title>Time App</title>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
   <link href="{{ url_for('static', filename='css/styles.css')}}" rel="stylesheet">
 
 
@@ -25,33 +29,117 @@
 
   <!-- Navigation -->
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <a class="navbar-brand brand" href="{{ url_for('get_user_info') }}">Time-app</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('get_user_info') }}">Home</a>
-          </li>
-          {% if not current_user.is_authenticated: %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('register') }}">Register</a>
-          </li>
-          {% endif %}
-          {% if current_user.is_authenticated: %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
-          </li>
-          {% endif%}
-        </ul>
-        </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <nav class="menu-container">
+  <!-- burger menu -->
+  <input type="checkbox" aria-label="Toggle menu" />
+  <span></span>
+  <span></span>
+  <span></span>
+
+  <!-- logo -->
+  <a href="#" class="menu-logo">
+    <img src="https://wweb.dev/resources/navigation-generator/logo-placeholder.png" alt="My Awesome Website"/>
+  </a>
+
+  <!-- menu items -->
+  <div class="menu">
+    <ul>
+      <li>
+        <a class="the-x" href="{{ url_for('get_user_info') }}">
+          Time App
+        </a>
+      </li>
+    </ul>
+    <ul>
+      <li>
+        <a class="the-x" href="{{ url_for('get_user_info') }}">
+          Home
+        </a>
+      </li>
+      {% if not current_user.is_authenticated: %}
+      <li>
+        <a class="the-x" href="{{ url_for('login') }}">
+          Login
+        </a>
+      </li>
+      <li>
+        <a class="the-x" href="{{ url_for('register') }}">
+          Register
+        </a>
+      </li>
+      {% endif %}
+      {% if current_user.is_authenticated: %}
+      <li>
+        <a class="the-x" href="{{ url_for('logout') }}">
+          Logout
+        </a>
+      </li>
+      <li>
+        <a class="the-x" href="#">
+          Discord
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+
+<!--  <nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+<!--    <div class="container-fluid">-->
+<!--      <a class="navbar-brand brand" href="{{ url_for('get_user_info') }}">Time-app</a>-->
+<!--      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--        <span class="navbar-toggler-icon"></span>-->
+<!--      </button>-->
+<!--      <div class="collapse navbar-collapse" id="navbarNav">-->
+<!--        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="{{ url_for('get_user_info') }}">Home</a>-->
+<!--          </li>-->
+<!--          {% if not current_user.is_authenticated: %}-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="{{ url_for('login') }}">Login</a>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="{{ url_for('register') }}">Register</a>-->
+<!--          </li>-->
+<!--          {% endif %}-->
+<!--          {% if current_user.is_authenticated: %}-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>-->
+<!--          </li>-->
+<!--          {% endif%}-->
+<!--        </ul>-->
+<!--        </li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </nav>-->
+
+<!--  <nav class="navbar navbar-expand-lg navbar-light fixed-top" >-->
+<!--    <div class="container">-->
+<!--      <a class="navbar-brand brand" href="{{url_for('get_user_info')}}">Time App</a>-->
+<!--      <button class="navbar-toggler brandnew" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--        Menu-->
+<!--        <i class="fas fa-bars"></i>-->
+<!--      </button>-->
+<!--      <div class="collapse navbar-collapse brandpull" id="navbarResponsive">-->
+<!--        <ul class="navbar-nav ml-auto">-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="{{ url_for('get_user_info') }}">Home</a>-->
+<!--          </li>-->
+<!--            {% if not current_user.is_authenticated: %}-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="{{ url_for('login') }}">Login</a>-->
+<!--          </li>-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="{{ url_for('register') }}">Register</a>-->
+<!--          </li>-->
+<!--            {% endif %}-->
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>-->
+<!--          </li>-->
+
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </nav>-->
