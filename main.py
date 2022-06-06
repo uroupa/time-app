@@ -15,8 +15,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from flask_gravatar import Gravatar
 from typing import Callable
-from flask import Flask, render_template, request
-from flask_bootstrap import Bootstrap
 from discord_oauth2 import DiscordAuth
 from zenora import APIClient
 
