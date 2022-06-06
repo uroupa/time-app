@@ -41,7 +41,7 @@ CLIENT_ID = 983318539261870080
 CLIENT_SECRET = "oah-kxGPTGOZsWhDd9OfEGUe-IJxsZvh"
 REDIRECT_URI = 'http://127.0.0.1:5000/auth/callback'
 
-TOKEN = "OTgzMzE4NTM5MjYxODcwMDgw.Gfrulw.zNcs6Tt0YA6actloB3gF3yYcT6Nz3VvEwKgntQ"
+TOKEN = "OTgzMzE4NTM5MjYxODcwMDgw.GcwBBk.cFn_JnPGy1dGcynGpbfPYjqJw5yHFALAtw4r1w"
 client = APIClient(TOKEN, client_secret=CLIENT_SECRET)
 new_url = "https://discord.com/api/oauth2/authorize?client_id=983318539261870080&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fauth%2Fcallback&response_type=code&scope=guilds"
 discord_auth = DiscordAuth(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
