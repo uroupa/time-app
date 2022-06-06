@@ -15,6 +15,10 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 from flask_gravatar import Gravatar
 from typing import Callable
+from flask import Flask, render_template, request
+from flask_bootstrap import Bootstrap
+from discord_oauth2 import DiscordAuth
+from zenora import APIClient
 
 todays_date = date.today()
 app = Flask(__name__)
@@ -32,6 +36,17 @@ login_manager.init_app(app)
 ##CONNECT TO DB and create the file
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Keys for Discord Api - I will refresh the tokens and the secret keys
+API_ENDPOINT = "https:///discord.com/api/v10"
+CLIENT_ID = 983318539261870080
+CLIENT_SECRET = "oah-kxGPTGOZsWhDd9OfEGUe-IJxsZvh"
+REDIRECT_URI = 'http://127.0.0.1:5000/auth/callback'
+
+TOKEN = "OTgzMzE4NTM5MjYxODcwMDgw.Gcw1kc.uo5BKd1OojORfiOax2Cv94nmiBthK_yqJn6GMw"
+client = APIClient(TOKEN, client_secret=CLIENT_SECRET)
+new_url = "https://discord.com/api/oauth2/authorize?client_id=983318539261870080&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fauth%2Fcallback&response_type=code&scope=guilds"
+discord_auth = DiscordAuth(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
 
 class MySQLAlchemy(SQLAlchemy):
@@ -267,7 +282,7 @@ def get_user_info():
             return redirect(url_for("get_user_info"))
 
         return render_template("index.html", all_priorities=priorities, idea_box=idea_form, scheduler_tab=schedule_form,
-                               topic=topic, date=todays_date)
+                               topic=topic, date=todays_date, oauth_uri=new_url)
 
 
 @app.route("/settask", methods=['GET', 'POST'])
@@ -311,6 +326,19 @@ def set_task():
         return redirect(url_for("get_user_info"))
     return render_template("create_task.html", form=form)
 
+# Discord
+@app.route("/auth/callback", methods=["GET", "POST"])
+def callback():
+    code = request.args["code"]
+    access_token = client.oauth.get_access_token(code, REDIRECT_URI).access_token
+
+    bearer_client = APIClient(access_token, bearer=True)
+
+    current_user_guilds = bearer_client.users.get_my_guilds()
+
+    guild_names = [guild.name for guild in list(current_user_guilds)]
+
+    return str(guild_names)
 
 if __name__ == "__main__":
     app.run(debug=True)
