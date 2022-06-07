@@ -39,11 +39,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 API_ENDPOINT = "https:///discord.com/api/v10"
 CLIENT_ID = os.environ.get("CLIENT_ID")
 CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
-REDIRECT_URI = 'http://127.0.0.1:5000/auth/callback'
+REDIRECT_URI = 'https://time-app-scheduler.herokuapp.com/auth/callback'
 
 TOKEN = os.environ.get("TOKEN")
 client = APIClient(TOKEN, client_secret=CLIENT_SECRET)
-new_url = f"https://discord.com/api/oauth2/authorize?client_id={CLIENT_SECRET}&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fauth%2Fcallback&response_type=code&scope=guilds"
+new_url = f"https://discord.com/api/oauth2/authorize?client_id={CLIENT_SECRET}&redirect_uri=https%3A%2F%2Ftime-app-scheduler.herokuapp.com%2Fauth%2Fcallback&response_type=code&scope=guilds"
 discord_auth = DiscordAuth(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
 
@@ -324,6 +324,7 @@ def set_task():
         return redirect(url_for("get_user_info"))
     return render_template("create_task.html", form=form)
 
+
 # Discord
 @app.route("/auth/callback", methods=["GET", "POST"])
 def callback():
@@ -338,6 +339,7 @@ def callback():
     guild_names = [guild.name for guild in list(current_user_guilds)]
 
     return str(guild_names)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
