@@ -37,13 +37,13 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Keys for Discord Api - I will refresh the tokens and the secret keys
 API_ENDPOINT = "https:///discord.com/api/v10"
-CLIENT_ID = 983318539261870080
-CLIENT_SECRET = "oah-kxGPTGOZsWhDd9OfEGUe-IJxsZvh"
+CLIENT_ID = os.environ.get("CLIENT_ID")
+CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
 REDIRECT_URI = 'http://127.0.0.1:5000/auth/callback'
 
-TOKEN = "OTgzMzE4NTM5MjYxODcwMDgw.GcwBBk.cFn_JnPGy1dGcynGpbfPYjqJw5yHFALAtw4r1w"
+TOKEN = os.environ.get("TOKEN")
 client = APIClient(TOKEN, client_secret=CLIENT_SECRET)
-new_url = "https://discord.com/api/oauth2/authorize?client_id=983318539261870080&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fauth%2Fcallback&response_type=code&scope=guilds"
+new_url = f"https://discord.com/api/oauth2/authorize?client_id={CLIENT_SECRET}&redirect_uri=http%3A%2F%2F127.0.0.1%3A5000%2Fauth%2Fcallback&response_type=code&scope=guilds"
 discord_auth = DiscordAuth(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
 
