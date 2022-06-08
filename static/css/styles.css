@@ -110,6 +110,12 @@ input[type="submit" i] {
   margin-bottom: 30px;
 }
 
+.login-container .btn{
+  display: block;
+  width: 70%;
+  margin: auto
+}
+
 .login-container form .control-label{
     display: inline-block;
     float: left;
