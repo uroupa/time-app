@@ -158,7 +158,11 @@ input[type="submit" i] {
    }
 
  .brand {
-   position: relative;}
+   position: relative;
+   left: 0%;
+   margin-left: 0px !important;  /* 50% of your logo width */
+   display: inline;
+   }
 }
 
 .project-topic-style {
