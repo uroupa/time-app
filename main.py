@@ -36,14 +36,16 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL1", "sqlite:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Keys for Discord Api - I will refresh the tokens and the secret keys
-API_ENDPOINT = "https:///discord.com/api/v10"
-CLIENT_ID = os.environ.get("CLIENT_ID")
-CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
-REDIRECT_URI = 'https://time-app-scheduler.herokuapp.com/auth/callback'
+# API_ENDPOINT = "https:///discord.com/api/v10"
+# CLIENT_ID = os.environ.get("CLIENT_ID")
+# CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
+# REDIRECT_URI = 'https://time-app-scheduler.herokuapp.com/auth/callback'
+#
+# TOKEN = os.environ.get("TOKEN")
+# client = APIClient(TOKEN, client_secret=CLIENT_SECRET)
+# new_url = f"https://discord.com/api/oauth2/authorize?client_id={CLIENT_SECRET}&redirect_uri=https%3A%2F%2Ftime-app-scheduler.herokuapp.com%2Fauth%2Fcallback&response_type=code&scope=guilds"
 
-TOKEN = os.environ.get("TOKEN")
-client = APIClient(TOKEN, client_secret=CLIENT_SECRET)
-new_url = f"https://discord.com/api/oauth2/authorize?client_id={CLIENT_SECRET}&redirect_uri=https%3A%2F%2Ftime-app-scheduler.herokuapp.com%2Fauth%2Fcallback&response_type=code&scope=guilds"
+new_url = "https://www.google.com"
 
 
 class MySQLAlchemy(SQLAlchemy):
@@ -325,19 +327,19 @@ def set_task():
 
 
 # Discord
-@app.route("/auth/callback", methods=["GET", "POST"])
-def callback():
-    code = request.args["code"]
-
-    access_token = client.oauth.get_access_token(code, REDIRECT_URI).access_token
-
-    bearer_client = APIClient(access_token, bearer=True)
-
-    current_user_guilds = bearer_client.users.get_my_guilds()
-
-    guild_names = [guild.name for guild in list(current_user_guilds)]
-
-    return str(guild_names)
+# @app.route("/auth/callback", methods=["GET", "POST"])
+# def callback():
+#     code = request.args["code"]
+#
+#     access_token = client.oauth.get_access_token(code, REDIRECT_URI).access_token
+#
+#     bearer_client = APIClient(access_token, bearer=True)
+#
+#     current_user_guilds = bearer_client.users.get_my_guilds()
+#
+#     guild_names = [guild.name for guild in list(current_user_guilds)]
+#
+#     return str(guild_names)
 
 
 if __name__ == "__main__":
