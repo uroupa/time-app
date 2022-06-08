@@ -18,7 +18,21 @@ h1 {
     position: relative;
     margin-bottom: 0px;
 }
+.brand {
+    position: absolute;
+    left: 50%;
+    margin-left: -50px !important;  /* 50% of your logo width */
+    display: block;
+}
 
+.brand {
+  padding-top: 10px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.3rem;
+}
+
+.main-content {
+  padding-top : 20px}
 
 .form-control {
   border-top-style: hidden;
