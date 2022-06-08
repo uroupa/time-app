@@ -27,7 +27,10 @@
           {% endif %}
           {% endwith %}
 
+          {{ form.csrf_token }}
           {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+          {{ form.hidden_tag() }}
+          <p>Don't have an account? <a href="{{ url_for('register') }}">Register.</a></p>
         </div>
       </div>
     </div>

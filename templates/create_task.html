@@ -5,32 +5,34 @@
 {% include "header.html" %}
 <div class="main-content">
     <!-- Page Header -->
-  <div class="login-container">
+    <div class="login-container">
 
-          <div class="page-heading">
+        <div class="page-heading">
             <h1>Plan Your Day</h1>
             <span class="subheading">You're going to bring order to your universe!</span>
-          </div>
+        </div>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            {% for message in messages %}
-              <p>{{ message }}</p>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    {% for message in messages %}
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
 
-        {{ ckeditor.load() }}
-        {{ ckeditor.config(name='gameplan') }}
+                    {{ ckeditor.load() }}
+                    {{ ckeditor.config(name='gameplan') }}
 
-        {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
-      </div>
+                    {{ form.csrf_token }}
+                    {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+                    {{ form.hidden_tag() }}
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-    </div>
-  </div>
+</div>
 {% include "footer.html" %}
 {% endblock %}

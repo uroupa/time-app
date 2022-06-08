@@ -189,9 +189,6 @@ def register():
                             password=generate_password_hash(password, method='pbkdf2:sha256', salt_length=8))
             db.session.add(new_user)
             db.session.commit()
-            login_user(new_user)
-            user_id = new_user.id
-            session['user_id'] = user_id
             flash("You've created your account. Log in!")
             return redirect(url_for('login'))
         else:
