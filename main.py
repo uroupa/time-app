@@ -126,6 +126,7 @@ class Login(FlaskForm):
 class GamePlanForm(FlaskForm):
     text = CKEditorField("", render_kw={"placeholder": "Game Plan"})
     submit_gp = SubmitField("Save")
+    clear_gp = SubmitField("Clear")
 
 
 class SchedulerForm(FlaskForm):
@@ -254,12 +255,14 @@ def get_user_info():
                                       six_pm=user_schedule.eighteen)
 
         if idea_form.validate_on_submit() and idea_form.submit_gp.data:
-            print('idea form validation')
             user_gameplan.text = idea_form.text.data
             db.session.commit()
             return redirect(url_for("get_user_info"))
+        elif idea_form.validate_on_submit() and idea_form.clear_gp.data:
+            user_gameplan.text = '-'
+            db.session.commit()
+            return redirect(url_for("get_user_info"))
         elif schedule_form.validate_on_submit() and schedule_form.submit_sf.data:
-            print('sched form validation')
             user_schedule.six = schedule_form.six_am.data
             user_schedule.seven = schedule_form.seven_am.data
             user_schedule.eight = schedule_form.eight_am.data

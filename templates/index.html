@@ -38,7 +38,8 @@
                         {{ ckeditor.load() }}
                         {{ ckeditor.config(name='text') }}
 
-                        {{ wtf.quick_form(idea_box, novalidate=True, button_map={"submit_gp": "success"}) }}
+                        {{ wtf.quick_form(idea_box, novalidate=True, button_map={"submit_gp": "success",
+                        "clear_gp":"danger"}) }}
                     </div>
 
                 </div>
