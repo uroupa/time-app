@@ -44,7 +44,6 @@ REDIRECT_URI = 'https://time-app-scheduler.herokuapp.com/auth/callback'
 TOKEN = os.environ.get("TOKEN")
 client = APIClient(TOKEN, client_secret=CLIENT_SECRET)
 new_url = f"https://discord.com/api/oauth2/authorize?client_id={CLIENT_SECRET}&redirect_uri=https%3A%2F%2Ftime-app-scheduler.herokuapp.com%2Fauth%2Fcallback&response_type=code&scope=guilds"
-discord_auth = DiscordAuth(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI)
 
 
 class MySQLAlchemy(SQLAlchemy):
