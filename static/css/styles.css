@@ -156,6 +156,9 @@ input[type="submit" i] {
  .login-container {
    width: 70%;
    }
+
+ .brand {
+   position: relative;}
 }
 
 .project-topic-style {
